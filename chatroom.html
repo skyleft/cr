@@ -12,6 +12,15 @@
         $(function(){
 
             $('#input').click(function(){if('请输入。。。[按回车键发送]'==this.value) this.value='';});
+
+            window.setInterval(function(){
+                console.log('开始清理历史聊天记录。。。');
+                var messages = $('#output').children();
+                if(messages.length>100){
+                    var li = messages.length-100;
+                    $('#output li:lt('+li+')').remove();
+                }
+            },60*1*1000);
             var iosocket = io.connect();
 
             iosocket.on('connect', function () {
