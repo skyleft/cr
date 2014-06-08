@@ -10,24 +10,31 @@
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script>
         $(function(){
+
+            $('#input').click(function(){if('请输入。。。[按回车键发送]'==this.value) this.value='';});
             var iosocket = io.connect();
 
             iosocket.on('connect', function () {
-                $('#output').append($('<li>Connected</li>'));
+                $('#output').append($('<li style="list-style: none;height: 30px;border-bottom: 1px solid #ccc;margin-bottom: 10px;">您已经成功登陆聊天室！</li>'));
 
                 iosocket.on('message', function(message) {
-                    $('#output').append($('<li></li>').text(message));
+                    $('#output').append($('<li style="margin-bottom:20px;"></li>').text(message));
                 });
                 iosocket.on('disconnect', function() {
-                    $('#output').append('<li>Disconnected</li>');
+                    $('#output').append('<li>您已经退出聊天室，感谢您的使用！</li>');
                 });
             });
 
             $('#input').keypress(function(event) {
                 if(event.which == 13) {
-                    event.preventDefault();
-                    iosocket.send($('#input').val());
-                    $('#output').append($('<li></li>').text($('#input').val()));
+                    var message_in = $('#input').val();
+                    if(''==message_in||undefined==message_in||null==message_in){
+                        alert('不能发送空消息');
+                        return;
+                    }
+                    event.preventDefault();event.stopPropagation();
+                    iosocket.send(message_in);
+                    $('#output').append($('<li style="text-align: right;list-style-position: inside;margin-bottom:20px;"></li>').text('我说： '+message_in));
                     $('#input').val('');
                 }
             });
@@ -38,9 +45,9 @@
 <article class="container">
 <section class="row" id="contact">
 
-    <div class="span10 panel" style="display: block;height: 500px;">
+    <div class="span10 panel" style="display: block;height: 500px;overflow-y: scroll;">
         <h3>A  Demo  ChatRoom!</h3>
-        <ul id="output"></ul>
+        <ul id="output" style="width:80%;margin-left:auto;margin-right: auto;"></ul>
 
     </div>
     <div class="span10">
@@ -48,10 +55,5 @@
     </div>
 </section>
 </article>
-<div class="container marketing">
-    <footer>
-        <p class="pull-right"><a href="#"></a></p>
-    </footer>
-</div>
 </body>
 </html>
