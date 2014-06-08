@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/common.css">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" charset="gb2312" src="http://counter.sina.com.cn/ip/"></script>
     <script>
         $(function(){
 
@@ -24,7 +25,7 @@
             var iosocket = io.connect();
 
             iosocket.on('connect', function () {
-                $('#output').append($('<li style="list-style: none;height: 30px;border-bottom: 1px solid #ccc;margin-bottom: 10px;">您已经成功登陆聊天室！</li>'));
+                $('#output').append($('<li style="list-style: none;height: 30px;border-bottom: 1px solid #ccc;margin-bottom: 10px;">欢迎来自['+ILData[1]+ILData[2]+']的朋友，您已经成功登陆聊天室！</li>'));
 
                 iosocket.on('message', function(message) {
                     $('#output').append($('<li style="margin-bottom:20px;"></li>').text(message));
@@ -42,7 +43,7 @@
                         return;
                     }
                     event.preventDefault();event.stopPropagation();
-                    iosocket.send(message_in);
+                    iosocket.send('['+ILData[0]+']说:'+message_in);
                     $('#output').append($('<li style="text-align: right;list-style-position: inside;margin-bottom:20px;"></li>').text('我说： '+message_in));
                     $('#input').val('');
                 }
