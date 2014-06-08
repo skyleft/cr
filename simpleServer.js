@@ -11,7 +11,7 @@ function processRequestRoute(request, response) {
     var pathname = url.parse(request.url).pathname;
     console.log(pathname);
     if (pathname === '/') {
-        pathname = "/index.html";
+        pathname = "/chatroom.html"; // make chatroom page be the default page
     }
     var ext = path.extname(pathname);
     var localPath = '';
