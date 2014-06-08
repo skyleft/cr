@@ -7,7 +7,7 @@ var url = require('url');
 var fs = require('fs');
 var path = require('path');
 
-function processRequestRoute(request, response) {
+function handleURL(request, response) {
     var pathname = url.parse(request.url).pathname;
     console.log(pathname);
     if (pathname === '/') {
@@ -27,18 +27,18 @@ function processRequestRoute(request, response) {
     fs.exists(localPath, function (exists) {
         if (exists) {
             if (staticRes) {
-                staticResHandler(localPath, ext, response);
+                staticURLHandle(localPath, ext, response);
             } else {
                 //just handled static resources for now
             }
         } else {
             response.writeHead(404, { 'Content-Type': 'text/plain' });
-            response.end('404:File Not found');
+            response.end('404');
         }
     });
 }
 
-function staticResHandler(localPath, ext, response) {
+function staticURLHandle(localPath, ext, response) {
     fs.readFile(localPath, "binary", function (error, file) {
         if (error) {
             response.writeHead(500, { "Content-Type": "text/plain" });
@@ -64,12 +64,8 @@ function getContentTypeByExt(ext) {
         return 'image/png';
     else if (ext === '.ico')
         return 'image/x-icon';
-    else if (ext === '.zip')
-        return 'application/zip';
-    else if (ext === '.doc')
-        return 'application/msword';
     else
         return 'text/plain';
 }
 
-exports.simpleServer = http.createServer(processRequestRoute);
+exports.simpleServer = http.createServer(handleURL);
